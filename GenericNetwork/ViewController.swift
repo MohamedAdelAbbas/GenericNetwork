@@ -22,7 +22,20 @@ class ViewController: UIViewController {
                 print("Error")
             }
         }
+        fetchPostData { (response) in
+            switch response{
+            case .success(let posts):
+                guard let posts = posts else { return }
+                for post in posts {
+                    print("id -> \(post.id), title -> \(post.title), body -> \(post.body)")
+                }
+            case.failure(_):
+                print("Error")
+            }
+        }
     }
+    
+
     func fetchUserData(completion:@escaping (Result<[UserModel]?, NSError>) -> Void) {
         let url = "https://jsonplaceholder.typicode.com/users"
         AF.request(url, method: .get, parameters: [:], headers: [:]).responseJSON { (response) in
@@ -31,6 +44,18 @@ class ViewController: UIViewController {
                 guard let jsonResponse = try? response.result.get() else { return }
                 guard let theJsonData = try? JSONSerialization.data(withJSONObject: jsonResponse, options: []) else { return }
                 guard let responseObj = try? JSONDecoder().decode([UserModel].self, from: theJsonData) else { return }
+                completion(.success(responseObj))
+            }
+        }
+    }
+    func fetchPostData(completion:@escaping (Result<[PostModel]?, NSError>) -> Void) {
+        let url = "https://jsonplaceholder.typicode.com/posts"
+        AF.request(url, method: .get, parameters: [:], headers: [:]).responseJSON { (response) in
+            guard let statuscode = response.response?.statusCode else { return }
+            if statuscode == 200 {
+                guard let jsonResponse = try? response.result.get() else { return }
+                guard let theJsonData = try? JSONSerialization.data(withJSONObject: jsonResponse, options: []) else { return }
+                guard let responseObj = try? JSONDecoder().decode([PostModel].self, from: theJsonData) else { return }
                 completion(.success(responseObj))
             }
         }
@@ -57,4 +82,10 @@ class CompanyModel: Decodable {
     var name: String?
     var catchPhrase: String?
     var bs: String?
+}
+
+class PostModel: Decodable {
+    var id: Int?
+    var title: String?
+    var body: String?
 }
