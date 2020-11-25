@@ -7,7 +7,7 @@
 
 import UIKit
 import Alamofire
-class ViewController: UIViewController {
+class TestVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,21 +84,21 @@ class ViewController: UIViewController {
 //    }
 }
 
-class UserModel: Decodable {
-    //MARK:- Properties
-    var id: Int?
-    var name: String?
-    var email: String?
-    var userName: String?
-    var company: CompanyModel?
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case email
-        case userName = "username"
-        case company
-    }
-}
+//class UserModel: Decodable {
+//    //MARK:- Properties
+//    var id: Int?
+//    var name: String?
+//    var email: String?
+//    var userName: String?
+//    var company: CompanyModel?
+//    enum CodingKeys: String, CodingKey {
+//        case id
+//        case name
+//        case email
+//        case userName = "username"
+//        case company
+//    }
+//}
 
 class CompanyModel: Decodable {
     var name: String?
